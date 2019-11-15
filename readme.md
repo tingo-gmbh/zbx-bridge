@@ -30,3 +30,13 @@ Commands must be added as follows:
 crestron_command=s,k
 ```
 Further the port can be defined, see **.env.example**.
+
+## Docker
+Build image from Dockerfile:
+```
+docker build -t tingo/zbx-bridge .
+```
+Then run the container:
+```
+docker run --rm -p 3000:3000 -v ${PWD}:/home/node/app --name zbx-bridge tingo/zbx-bridge
+```

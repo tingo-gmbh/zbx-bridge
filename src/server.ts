@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
     const stdout = execSync(zabbixSenderCommand);
     res.send(`Output: ${stdout}`);
   } else {
-    res.send(`Command not found!`);
+    res.send(`Command not found! Please check your env file.`);
   }
 });
 
