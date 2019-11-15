@@ -9,10 +9,14 @@ const app = express();
 config({ path: resolve(__dirname, "./../.env") });
 
 app.get("/", (req, res) => {
-    const command = process.env[req.query.command];
-    const zabbixSenderCommand = `/bin/zabbix_sender -z ${address()} -s "test" -k "tgo.test" -o "${command}" -vv`;
-    const stdout = execSync(zabbixSenderCommand);
-    res.send(`Output: ${stdout}`);
+    if (process.env[req.query.command]) {
+        const [s, k] = process.env[req.query.command].split(',');
+        const zabbixSenderCommand = `/usr/local/bin/zabbix_sender -z ${address()} -s "${s}" -k "${k}" -o "${req.query.command}" -vv`;
+        const stdout = execSync(zabbixSenderCommand);
+        res.send(`Output: ${stdout}`);
+    } else {
+        res.send(`Command not found!`);
+    }
 })
 
 // Start server
