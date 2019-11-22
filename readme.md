@@ -15,7 +15,8 @@ npm build
 Run the server indefinitely with PM2:
 ```
 npm install -g pm2
-npm start /path-to-your-folder/dist/server.js
+pm2 start /path-to-your-folder/dist/server.js
+pm2 list
 ```
 See [Startup Script Generator](https://pm2.keymetrics.io/docs/usage/startup/) to run it during system boot.
 
