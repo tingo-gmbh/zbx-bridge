@@ -9,13 +9,13 @@ npm run start:watch
 ## Production
 ```
 npm install
-npm build
+npm run build
 ```
 
 Run the server indefinitely with PM2:
 ```
 npm install -g pm2
-pm2 start /path-to-your-folder/dist/server.js
+pm2 start /path-to-your-folder/dist/server.js --name zbx-bridge
 pm2 list
 ```
 See [Startup Script Generator](https://pm2.keymetrics.io/docs/usage/startup/) to run it during system boot.
