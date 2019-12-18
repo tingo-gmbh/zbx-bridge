@@ -17,9 +17,9 @@ config({ path: resolve(__dirname, "./../.env") });
 // Route definitions
 app.get("/", (req, res) => {
   if (process.env[req.query.command]) {
-    const [s, k] = process.env[req.query.command].split(",");
+    const [o, s, k] = process.env[req.query.command].split(",");
     const zabbixHost = process.env.ZBX_HOST || '127.0.0.1';
-    const zabbixSenderCommand = `/usr/local/bin/zabbix_sender -z ${zabbixHost} -s "${s}" -k "${k}" -o "${req.query.command}" -vv`;
+    const zabbixSenderCommand = `/usr/local/bin/zabbix_sender -z ${zabbixHost} -s "${s}" -k "${k}" -o "${o}" -vv`;
     const stdout = execSync(zabbixSenderCommand);
     res.send(`Output: ${stdout}`);
   } else {
