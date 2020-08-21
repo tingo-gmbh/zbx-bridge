@@ -20,7 +20,7 @@ npm install
 npm run build
 ```
 
-Run our server as daemon process with [PM2](https://pm2.keymetrics.io/):
+Run our server as a daemon process with [PM2](https://pm2.keymetrics.io/):
 
 ```
 npm install -g pm2
@@ -30,7 +30,7 @@ pm2 list
 
 See [Startup Script Generator](https://pm2.keymetrics.io/docs/usage/startup/) to run it during system boot.
 
-Deploy bash command:
+**Deploy bash command:**
 ```
 alias zbx-bridge-deploy="pm2 delete zbx-bridge && cd /home/pi/zbx-bridge && git pull origin master && npm install && npm run build && npm run production"
 ```
