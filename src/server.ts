@@ -20,7 +20,7 @@ config({ path: resolve(__dirname, "./../.env") });
 // Create ZBX bridge handler
 const zbxBridgeHandler = new ZBXBridgeHandler(
   process.env.ZABBIX_HOST,
-  process.env.ZABBIX_HOST,
+  process.env.ZABBIX_SENDER_PATH,
   process.env.API_HOST,
   process.env.API_AUTH
 );

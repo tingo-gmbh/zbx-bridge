@@ -103,7 +103,7 @@ class ZBXBridgeHandler {
    * @param name
    */
   private runZabbixSender(name: string, key: string, value) {
-    const zabbixSenderCommand = `${this.zabbixSenderPath} -z ${this.zabbixHost} -s "${name}" -k "${key}" -o "${value}" -vv`;
+    const zabbixSenderCommand = `${this.zabbixSenderPath} -z "${this.zabbixHost}" -s "${name}" -k "${key}" -o "${value}" -vv`;
     try {
       let response = execSync(zabbixSenderCommand, { stdio: [0] });
       return response;
