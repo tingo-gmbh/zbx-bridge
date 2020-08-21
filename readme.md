@@ -30,6 +30,11 @@ pm2 list
 
 See [Startup Script Generator](https://pm2.keymetrics.io/docs/usage/startup/) to run it during system boot.
 
+Deploy bash command:
+```
+alias zbx-bridge-deploy="pm2 delete zbx-bridge && cd /home/pi/zbx-bridge && git pull origin master && npm install && npm run build && npm run production"
+```
+
 ## Usage
 
 ```

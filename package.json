@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node --inspect=5858 -r ts-node/register ./src/server.ts",
     "start:watch": "nodemon",
-    "build": "tsc"
+    "build": "tsc",
+    "production": "npm run build && pm2 start ./dist/server.js --watch --name zbx-bridge"
   },
   "author": "Nicolas Bruegger <nicolas.bruegger@tingo>",
   "license": "ISC",
