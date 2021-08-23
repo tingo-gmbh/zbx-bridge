@@ -28,7 +28,8 @@ class ZBXBridgeHandler {
 
   /**
    * Create new handler.
-   * @param zbxHost
+   * @param zabbixHost
+   * @param zabbixSenderPath
    * @param apiHost
    * @param apiAuth
    */
@@ -61,32 +62,52 @@ class ZBXBridgeHandler {
       throw "Command could not be found.";
     }
 
-    // Check if correct type was set.
-    if (!["sender", "api"].includes(loadedCommand.type)) {
-      throw "Invalid type set.";
-    }
-
-    if (loadedCommand.type === "sender") {
-      return this.runZabbixSender(
-        loadedCommand.name,
-        loadedCommand.key,
-        loadedCommand.value
-      );
-    }
-
-    if (loadedCommand.type === "api") {
-      const response = await this.updateHostMacro(
-        loadedCommand.hostmacroid,
-        loadedCommand.value
-      );
-
-      if (response.error) {
-        Logger.logError(JSON.stringify(response));
-        return "Failed to update host macro.";
+    loadedCommand.forEach((command: any) => {
+      // Check if correct type was set.
+      if (!["sender", "api"].includes(command.type)) {
+        throw "Invalid type set.";
       }
 
-      return "Updated host macro.";
-    }
+      if (command.type === "sender") {
+        return this.runZabbixSender(
+            command.name,
+            command.key,
+            command.value
+        );
+      }
+
+      if (command.type === "api") {
+        try {
+          let response = {};
+          if (command.hostmacroid) {
+            response = this.updateHostMacro(
+                command.hostmacroid,
+                command.value
+            );
+          } else if (loadedCommand.globalmacroid) {
+            response = this.updateGlobalMacro(
+                command.globalmacroid,
+                command.value
+            );
+          }
+
+          // Stop in case of error and return message.
+          if (response) {
+            if (response.hasOwnProperty('error')) {
+              Logger.logError(JSON.stringify(response['error']));
+              return "Failed to run macro.";
+            }
+          }
+        } catch (error) {
+          if (error) {
+            Logger.logError(JSON.stringify(error));
+            return "Failed to run macro.";
+          }
+        }
+      }
+    });
+
+    return "Received command.";
   }
 
   /**
@@ -105,8 +126,7 @@ class ZBXBridgeHandler {
   private runZabbixSender(name: string, key: string, value) {
     const zabbixSenderCommand = `${this.zabbixSenderPath} -z "${this.zabbixHost}" -s "${name}" -k "${key}" -o "${value}" -vv`;
     try {
-      let response = execSync(zabbixSenderCommand, { stdio: [0] });
-      return response;
+      return execSync(zabbixSenderCommand, { stdio: [0] });
     } catch (exception) {
       Logger.logError(exception.toString());
       return "Failed to run zabbix sender.";
@@ -115,7 +135,7 @@ class ZBXBridgeHandler {
 
   /**
    * Update a host macro using the zabbix API.
-   * @param key
+   * @param hostmacroid
    * @param value
    */
   private async updateHostMacro(hostmacroid: string, value: string) {
@@ -124,8 +144,8 @@ class ZBXBridgeHandler {
         jsonrpc: "2.0",
         method: "usermacro.update",
         params: {
-          hostmacroid: hostmacroid,
-          value: value,
+          hostmacroid,
+          value,
         },
         auth: this.apiAuth,
         id: 1,
@@ -135,6 +155,32 @@ class ZBXBridgeHandler {
       Logger.logError(exception.toString());
       return {
         error: "Failed to update host macro.",
+      };
+    }
+  }
+
+  /**
+   * Update a host macro using the zabbix API.
+   * @param globalmacroid
+   * @param value
+   */
+  private async updateGlobalMacro(globalmacroid: string, value: string) {
+    try {
+      const response = await axios.post(`${this.apiHost}/api_jsonrpc.php`, {
+        jsonrpc: "2.0",
+        method: "usermacro.updateglobal",
+        params: {
+          globalmacroid,
+          value,
+        },
+        auth: this.apiAuth,
+        id: 1,
+      });
+      return response.data;
+    } catch (exception) {
+      Logger.logError(exception.toString());
+      return {
+        error: "Failed to update global macro.",
       };
     }
   }

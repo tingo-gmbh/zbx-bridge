@@ -28,7 +28,7 @@ const zbxBridgeHandler = new ZBXBridgeHandler(
 // Route definitions.
 app.get("/", (req, res) => {
   zbxBridgeHandler
-    .processCommand(req.query.command)
+    .processCommand(req.query.command ? req.query.command.toString() : null)
     .then((response) => {
       res.status(200).send(response);
     })
