@@ -1,13 +1,20 @@
 {
-  "ct_zbx_anlage_ein": {
-    "type": "sender",
-    "key": "tgo.test",
-    "value": 1,
-    "name": "host.zbx.host.test"
-  },
-  "ct_zbx_macro_update": {
-    "type": "api",
-    "hostmacroid": 844,
-    "value": "public"
-  }
+  "ct_zbx_anlage_ein": [
+    {
+      "type": "sender",
+      "key": "tgo.test",
+      "value": 1,
+      "name": "host.zbx.host.test"
+    },
+    {
+      "type": "api",
+      "globalmacroid": 1,
+      "value": "public"
+    },
+    {
+      "type": "api",
+      "hostmacroid": 844,
+      "value": "public"
+    }
+  ]
 }
