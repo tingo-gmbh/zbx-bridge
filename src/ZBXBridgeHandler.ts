@@ -84,7 +84,7 @@ class ZBXBridgeHandler {
                 command.hostmacroid,
                 command.value
             );
-          } else if (loadedCommand.globalmacroid) {
+          } else if (command.globalmacroid) {
             response = this.updateGlobalMacro(
                 command.globalmacroid,
                 command.value
