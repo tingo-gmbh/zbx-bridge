@@ -1,20 +1,30 @@
 {
-  "ct_zbx_anlage_ein": [
-    {
-      "type": "sender",
-      "key": "tgo.test",
-      "value": 1,
-      "name": "host.zbx.host.test"
-    },
-    {
-      "type": "api",
-      "globalmacroid": 1,
-      "value": "public"
-    },
-    {
-      "type": "api",
-      "hostmacroid": 844,
-      "value": "public"
-    }
-  ]
+   "ct_zbx_anlage_ein":[
+      {
+         "type":"sender",
+         "key":"tgo.test",
+         "value":1,
+         "name":"host.zbx.host.test"
+      },
+      {
+         "type":"api",
+         "method":"usermacro.massUpdate",
+         "params":{
+            "hostmacroid":"1",
+            "value":"public"
+         }
+      },
+      {
+         "type":"api",
+         "method":"usermacro.massUpdate",
+         "params":{
+            "macros":[
+               {
+                  "macro":844,
+                  "value":"public"
+               }
+            ]
+         }
+      }
+   ]
 }

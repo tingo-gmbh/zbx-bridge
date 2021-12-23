@@ -90,8 +90,15 @@ Must include **type=api** property. e.g.
 ```
 "ct_zbx_macro_update": {
     "type": "api",
-    "hostmacroid": 844,
-    "value": "public"
+    "method":"usermacro.massUpdate",
+    "params":{
+       "macros":[
+          {
+             "macro":844,
+             "value":"public"
+          }
+       ]
+    }
   }
 ```
 

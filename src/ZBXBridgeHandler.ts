@@ -78,18 +78,7 @@ class ZBXBridgeHandler {
 
       if (command.type === "api") {
         try {
-          let response = {};
-          if (command.hostmacroid) {
-            response = this.updateHostMacro(
-                command.hostmacroid,
-                command.value
-            );
-          } else if (command.globalmacroid) {
-            response = this.updateGlobalMacro(
-                command.globalmacroid,
-                command.value
-            );
-          }
+          const response = this.sendApiRequest(command.method, command.params);
 
           // Stop in case of error and return message.
           if (response) {
@@ -134,19 +123,18 @@ class ZBXBridgeHandler {
   }
 
   /**
-   * Update a host macro using the zabbix API.
-   * @param hostmacroid
-   * @param value
+   * Send API request.
+   *
+   * @param method
+   * @param params
+   * @private
    */
-  private async updateHostMacro(hostmacroid: string, value: string) {
+  private async sendApiRequest(method: string, params: Object) {
     try {
       const response = await axios.post(`${this.apiHost}/api_jsonrpc.php`, {
         jsonrpc: "2.0",
-        method: "usermacro.update",
-        params: {
-          hostmacroid,
-          value,
-        },
+        method,
+        params,
         auth: this.apiAuth,
         id: 1,
       });
@@ -155,32 +143,6 @@ class ZBXBridgeHandler {
       Logger.logError(exception.toString());
       return {
         error: "Failed to update host macro.",
-      };
-    }
-  }
-
-  /**
-   * Update a host macro using the zabbix API.
-   * @param globalmacroid
-   * @param value
-   */
-  private async updateGlobalMacro(globalmacroid: string, value: string) {
-    try {
-      const response = await axios.post(`${this.apiHost}/api_jsonrpc.php`, {
-        jsonrpc: "2.0",
-        method: "usermacro.updateglobal",
-        params: {
-          globalmacroid,
-          value,
-        },
-        auth: this.apiAuth,
-        id: 1,
-      });
-      return response.data;
-    } catch (exception) {
-      Logger.logError(exception.toString());
-      return {
-        error: "Failed to update global macro.",
       };
     }
   }
