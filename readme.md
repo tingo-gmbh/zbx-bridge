@@ -7,6 +7,7 @@
 ```
 cp .env.example .env
 cp commands.json.example commands.json
+nvm install
 npm install
 npm run start:watch
 ```
@@ -16,6 +17,7 @@ npm run start:watch
 ```
 cp .env.example .env
 cp commands.json.example commands.json
+nvm install
 npm install
 npm run build
 ```
