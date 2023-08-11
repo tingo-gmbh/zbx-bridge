@@ -1,4 +1,4 @@
-# Bridge for Zabbix Sender
+# Bridge for Zabbix
 
 ## Install
 
