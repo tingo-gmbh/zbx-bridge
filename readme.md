@@ -118,5 +118,9 @@ Then run the container:
 
 ```
 cp .env.example .env
-docker run --rm -p 3000:3000 -v ${PWD}:/home/node/app --name zbx-bridge tingo/zbx-bridge
+cp commands.json.example commands.json
+docker run --rm -p 3000:3000 \
+  -v ${PWD}/.env:/home/node/app/.env \
+  -v ${PWD}/commands.json:/home/node/app/commands.json \
+  --name zbx-bridge tingo/zbx-bridge
 ```

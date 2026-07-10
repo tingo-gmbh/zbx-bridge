@@ -6,9 +6,10 @@ WORKDIR /home/node/app
 
 COPY --chown=node:node package*.json ./
 USER node
-RUN npm install
+RUN npm ci
 COPY --chown=node:node . .
+RUN npm run build
 
 EXPOSE 3000
 
-CMD [ "npm", "run", "start:watch" ]
+CMD [ "node", "dist/server.js" ]
