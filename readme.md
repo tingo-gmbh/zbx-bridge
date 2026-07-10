@@ -133,3 +133,9 @@ docker stop zbx-bridge      # stop
 docker start zbx-bridge     # start again
 docker rm -f zbx-bridge     # remove
 ```
+
+**Config changes:** `commands.json` is read on every request, so edits apply immediately. `.env` is only loaded at process start, so after changing it you need to restart the container:
+
+```
+docker restart zbx-bridge
+```
