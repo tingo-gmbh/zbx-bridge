@@ -37,6 +37,21 @@ See [Startup Script Generator](https://pm2.keymetrics.io/docs/usage/startup/) to
 alias zbx-bridge-deploy="pm2 delete zbx-bridge && cd /home/pi/zbx-bridge && git pull origin master && npm install && npm run build && npm run production"
 ```
 
+**Restart after config changes:**
+
+`commands.json` is read on every request, so edits apply immediately. `.env` is only loaded at process start, so after changing it the app must be restarted. Add this function to `~/.bashrc` (adjust the path), then run `source ~/.bashrc`:
+
+```
+zbx-restart() {
+  local dir=/path-to-your-folder   # adjust
+  node -e "JSON.parse(require('fs').readFileSync('$dir/commands.json','utf8'))" \
+    || { echo "commands.json is not valid JSON - not restarting." >&2; return 1; }
+  pm2 restart zbx-bridge && sleep 2 && pm2 logs zbx-bridge --lines 20 --nostream
+}
+```
+
+Running `zbx-restart` checks that `commands.json` is valid JSON, restarts the app and shows the last 20 log lines.
+
 ## Usage
 
 ```
